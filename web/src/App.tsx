@@ -5,10 +5,10 @@ function App() {
   
   return <>
     <h1>
-      Hello React
+      Hello App
     </h1>
     <button onClick={async () => {
-      const response = await fetch("http://localhost:8000/api/hello", {mode: 'cors'})
+      const response = await fetch(`${process.env.REACT_APP_API_SERVER}/hello`, {mode: 'cors'})
       const res = await response.json()
       setHelloText(res.msg)
     }}>

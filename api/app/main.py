@@ -22,5 +22,5 @@ print("なんでやねん！！")
 
 @app.get("/api/hello")
 async def get_root():
-    num = random.randint(0,8)
+    num = random.randint(-5,0)
     return {"msg": "Hello World " + str(num)}
