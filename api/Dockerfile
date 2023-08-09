@@ -10,7 +10,6 @@ COPY ./app/ .
 CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
 
 
-# 現状、ホットリロードしないのでこっちが読み込まれている
 # Production
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9-slim AS production
 

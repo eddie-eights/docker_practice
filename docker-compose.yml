@@ -1,17 +1,18 @@
-version: '3.0'
+version: "3.0"
 services:
   api:
     container_name: api
-    build: ./api
+    build:
+      context: ./api
+      target: base
     ports:
       - 8000:8000
     volumes:
       - ./api:/workspace:cached
-      
-    
+
   web:
     container_name: web
-    build: 
+    build:
       context: ./web
       target: base
     ports:
