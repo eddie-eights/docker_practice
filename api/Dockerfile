@@ -1,23 +1,17 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9-slim AS base
+FROM python:3.9-slim AS base
 
+COPY . /workspace
 WORKDIR /workspace/app
-
-COPY requirements.txt ../
 RUN pip install --no-cache-dir --upgrade -r /workspace/requirements.txt
-
-COPY ./app/ .
 
 CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
 
 
 # Production
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9-slim AS production
+FROM python:3.9-slim AS production
 
+COPY . /workspace
 WORKDIR /workspace/app
-
-COPY requirements.txt ../
 RUN pip install --no-cache-dir --upgrade -r /workspace/requirements.txt
-
-COPY ./app/ .
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
