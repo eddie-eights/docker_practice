@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION: ap-northeast-1
   ECS_SERVICE: simple-cicd-service
-  ECS_CLUSTER: sinple-cicd-cluster
+  ECS_CLUSTER: simple-cicd-cluster
   ECS_TASK_DEFINITION: .aws/task-definition.jsonc
 
 permissions:
@@ -32,7 +32,7 @@ jobs:
 
     ## Build/Test & Docker Image Build
       - name: Build an Image and Run Tests
-        run: 
+        run: |
           docker image build --target production -t temp_web_image_name:latest --build-arg REACT_APP_API_SERVER=/api .
     
     ## Login AWS
@@ -40,7 +40,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       
       - name: Login to Amazon ECR
@@ -53,7 +53,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.AWS_ECR_WEB_SERVER_REPOSITORY }}
-        run:
+        run: |
           docker image tag temp_web_image_name:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
@@ -73,7 +73,7 @@ jobs:
     
     ## Build/Test & Docker Image Build
       - name: Build an Image and Run Tests
-        run: 
+        run: |
           docker image build --target production -t temp_api_image_name:latest .
     
     ## Login AWS
@@ -81,7 +81,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       
       - name: Login to Amazon ECR
@@ -94,7 +94,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.AWS_ECR_API_SERVER_REPOSITORY }}
-        run:
+        run: |
           docker image tag temp_api_image_name:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
@@ -111,10 +111,10 @@ jobs:
 
     ## Login AWS
       - name: Configure AWS credentials
-        uses: aws-actions/configure-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       
       - name: Login to Amazon ECR
